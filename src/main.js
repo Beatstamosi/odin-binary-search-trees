@@ -62,6 +62,37 @@ export default class Tree {
         return node;
     }
 
+    deleteItem(value, node = this.root) {
+        if (node === null) return node;
+
+        if (value < node.data) {
+            node.left = this.deleteItem(value, node.left);
+        } else if (value > node.data) {
+            node.right = this.deleteItem(value, node.right);
+        } else {
+            // node has no children or 1 child
+            if (node.left === null) return node.right;
+
+            if (node.right === null) return node.left;
+
+            if (node.left !== null && node.right !== null) {
+                let succ = this.getSuccessor(node);
+                node.data = succ.data;
+                node.right = this.deleteItem(succ.data, node.right);
+            }
+        }
+        return node;
+    }
+
+    getSuccessor(curr) {
+        curr = curr.right;
+
+        while(curr !== null && curr.left !== null) {
+            curr = curr.left;
+        }
+
+        return curr;
+    }
     
 
     }
