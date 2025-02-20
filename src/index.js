@@ -10,4 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
     tree.prettyPrint(tree.root);
     tree.deleteItem(67);
     tree.prettyPrint(tree.root);
+    // console.log(tree.find(13));
+    const print = (item) => console.log(item); 
+    // tree.levelOrder(print);
+    tree.preOrder(print);
+
 })

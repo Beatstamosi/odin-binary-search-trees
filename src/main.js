@@ -49,13 +49,13 @@ export default class Tree {
     }
 
     insert(value, node = this.root) {
-        if (node == null) return new Node(value);
+        if (node === null) return new Node(value);
 
-        if (node.data == value) return node; // no duplicates
+        if (value == node.data) return node;
 
         if (value < node.data) {
             node.left = this.insert(value, node.left);
-        } else {
+        } else if (value > node.data) {
             node.right = this.insert(value, node.right);
         }
 
@@ -93,6 +93,64 @@ export default class Tree {
 
         return curr;
     }
-    
+
+    find(value, node = this.root) {
+        if (value == node.data) return node;
+
+        if (value < node.data) {
+            return this.find(value, node.left);
+        } else {
+            return this.find(value, node.right);
+        }
+    }
+
+    levelOrder(callback) {
+        if (!callback) throw Error("Callback function needed as argument");
+
+        let queue = [];
+        queue.push(this.root);
+
+        while (queue.length !== 0) {
+            let node = queue.shift();
+            callback(node);
+            if (node.left !== null) queue.push(node.left);
+            if (node.right !== null) queue.push(node.right);
+        }
+    }
+
+    preOrder(callback, node = this.root) {
+        if (!callback) throw Error("Callback function needed as argument");
+
+        if (node == null) return;
+
+        callback(node);
+        this.inOrder(callback, node.left);
+        this.inOrder(callback, node.right);
+    }
+
+    inOrder(callback, node = this.root) {
+        if (!callback) throw Error("Callback function needed as argument");
+
+        if (node == null) return;
+
+        this.inOrder(callback, node.left);
+        callback(node);
+        this.inOrder(callback, node.right);
+    }
+
+    postOrder(callback, node = this.root) {
+        if (!callback) throw Error("Callback function needed as argument");
+
+        if (node == null) return;
+
+        this.inOrder(callback, node.left);
+        this.inOrder(callback, node.right);
+        callback(node);
+    }
+
+
+    height(node) {
+        
+    }
 
     }
