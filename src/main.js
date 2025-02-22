@@ -124,8 +124,8 @@ export default class Tree {
         if (node == null) return;
 
         callback(node);
-        this.inOrder(callback, node.left);
-        this.inOrder(callback, node.right);
+        this.preOrder(callback, node.left);
+        this.preOrder(callback, node.right);
     }
 
     inOrder(callback, node = this.root) {
@@ -143,14 +143,56 @@ export default class Tree {
 
         if (node == null) return;
 
-        this.inOrder(callback, node.left);
-        this.inOrder(callback, node.right);
+        this.postOrder(callback, node.left);
+        this.postOrder(callback, node.right);
         callback(node);
     }
 
 
     height(node) {
-        
+        if (node === null) return -1;
+
+        return 1 + Math.max(this.height(node.left), this.height(node.right));
+    }
+
+    depth(node, root = this.root, dist = -1) {
+        if (node === null) return dist;
+
+        if (node.data < root.data) {
+            return this.depth(node, root.left, dist + 1);
+        } else if (node.data > root.data) {
+            return this.depth(node, root.right, dist + 1);
+        } else {
+            return dist + 1;
+        }
+    }
+
+    isBalanced() {
+        let isBalancedTree = true;
+
+        const compareHeight = (node) => {
+            let leftHeight = this.height(node.left);
+            let rightHeight = this.height(node.right);
+    
+            if (Math.abs(leftHeight - rightHeight) > 1) {
+                isBalancedTree = false;
+            }
+        }
+    
+        this.levelOrder(compareHeight);
+    
+        return isBalancedTree;
+    }
+
+    rebalance() {
+        let array = [];
+
+        const add = (node) => {
+            array.push(node.data)
+        }
+
+        this.inOrder(add);
+        this.root = this.buildTree(array);
     }
 
     }
