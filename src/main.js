@@ -95,6 +95,8 @@ export default class Tree {
     }
 
     find(value, node = this.root) {
+        if (node === null) return null;
+        
         if (value == node.data) return node;
 
         if (value < node.data) {
